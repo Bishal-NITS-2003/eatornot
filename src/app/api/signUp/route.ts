@@ -5,20 +5,8 @@ import UserModel from "../../../model/User";
 export async function POST(req: Request) {
   await dbConnect();
   try {
-    const { username, email, password } = await req.json();
+    const { name, email, password} = await req.json();
 
-    const existingUsername = await UserModel.findOne({ username });
-
-    if (existingUsername) {
-      return Response.json(
-        {
-          success: false,
-          message:
-            "Username already exists. Please choose a different username",
-        },
-        { status: 400 },
-      );
-    }
 
     const existingUserByEmail = await UserModel.findOne({ email });
 
@@ -35,9 +23,10 @@ export async function POST(req: Request) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new UserModel({
-      username,
+      name,
       email,
       password: hashedPassword,
+      diseases: [],
     });
 
     await newUser.save();

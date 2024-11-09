@@ -2,19 +2,16 @@ import mongoose, { Schema, Document } from "mongoose";
 import moment from "moment-timezone";
 
 export interface User extends Document {
-  username: string;
+  name: string;
   email: string;
   password: string;
-  imageUrl?: string;
-  diseases?: string[];
+  diseases: string[];
 }
 
 const UserSchema: Schema = new Schema({
-  username: {
+  name: {
     type: String,
-    required: [true, "Username is required"],
-    trim: true,
-    unique: true,
+    required: [true, "Name is required"],
   },
   email: {
     type: String,
@@ -26,11 +23,9 @@ const UserSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
-    type: String,
-  },
   diseases: {
-    type: String,
+    type: [String],
+    default: [],
   },
 });
 

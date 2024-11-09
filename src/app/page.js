@@ -1,5 +1,4 @@
 // pages/index.js
-import FoodDetector from "../../components/FoodDetector";
 
 export default function Home() {
   return (

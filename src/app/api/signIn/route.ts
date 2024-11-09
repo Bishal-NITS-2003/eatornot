@@ -5,12 +5,14 @@ import dbConnect from "../../../lib/dbConnect";
 import UserModel from "../../../model/User";
 
 export async function POST(req: NextRequest) {
+
+  if (req.method === "POST") {
+
   try {
     await dbConnect();
-    const { usernameOrEmail, password } = await req.json();
-    const user = await UserModel.findOne({
-      $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
-    });
+    const { email, password } = await req.json();
+    const user = await UserModel.findOne({email});
+      
     if (!user) {
       return Response.json(
         { success: false, message: "User does not exist" },
@@ -26,7 +28,6 @@ export async function POST(req: NextRequest) {
     }
     const tokenData = {
       id: user._id,
-      username: user.username,
       email: user.email,
     };
     const token = await jwt.sign(tokenData, process.env.JWT_TOKEN_SECRET, {
@@ -44,4 +45,5 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     return Response.json({ success: false, message: err }, { status: 500 });
   }
+}
 }

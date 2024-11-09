@@ -1,0 +1,60 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-section {
+    width: 40%;
+    padding: 20px;
+  }
+  
+  .right-section {
+    width: 60%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .drop-box {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .drop-area {
+    border: 2px solid #ccc;
+    padding: 40px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .voice-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .voice-btn:hover {
+    background-color: #0056b3;
+  }
+  
