@@ -2,61 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import { User } from 'lucide-react';
 
-const ProfileCard = () => {
-  // const [userData, setUserData] = useState({
-  //   name: '',
-  //   email: '',
-  //   diseases: [],
-  // });
-
-  // // Fetch data from API on component mount
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await fetch('/api/getUser');
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setUserData({
-  //           name: data.name,
-  //           email: data.email,
-  //           diseases: data.diseases || [], // Ensure diseases is an array
-  //         });
-  //       } else {
-  //         console.error('Failed to fetch user data');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, []); // Empty dependency array means this runs only once on mount
-
-  // return (
-  //   <div className="profile-card">
-  //     <div className="profile-image">
-  //       <img src="/placeholder.png" alt="Profile" width="100" height="100" />
-  //     </div>
-  //     <div className="profile-details">
-  //       <h2 className="profile-name">{userData.name || 'Loading...'}</h2>
-  //       <p className="profile-email">{userData.email || 'Loading...'}</p>
-  //       <div className="profile-diseases">
-  //         {userData.diseases.length > 0 ? (
-  //           userData.diseases.map((disease, index) => (
-  //             <span key={index} className="disease-item">{disease}</span>
-  //           ))
-  //         ) : (
-  //           <span>No diseases listed</span>
-  //         )}
-  //       </div>
-  //       <button className="add-disease-btn">Add Disease</button>
-  //     </div>
-  //   </div>
-  // );
+const ProfileCard = ({ setUserDiseases }) => {
+ 
 
   const [name, setName] = useState("Loading...");
   const [email, setEmail] = useState("Loading...");
   const [listItems, setListItems] = useState([]);
+
   const [newItem, setNewItem] = useState('');
 
   useEffect(() => {
@@ -68,11 +20,7 @@ const ProfileCard = () => {
             setName(data.name);
             setEmail(data.email);
             setListItems(data.diseases || []);
-            // setUserData({
-            //   name: data.name,
-            //   email: data.email,
-            //   diseases: data.diseases || [], // Ensure diseases is an array
-            // });
+            setUserDiseases(data.diseases || []);
           } else {
             console.error('Failed to fetch user data');
           }
@@ -88,6 +36,7 @@ const ProfileCard = () => {
     if (newItem.trim()) {
       setListItems([...listItems, newItem]);
       setNewItem('');
+      setUserDiseases([...listItems, newItem]);
     }
   };
 

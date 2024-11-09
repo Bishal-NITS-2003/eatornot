@@ -2,60 +2,85 @@
 
 import React, { useEffect, useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
-import "./styles.css";
 import { Mic } from 'lucide-react';
-
+import foodRestrictionsData from '../data/data.json'
 const Dashboard = () => {
 
   const [file, setFile] = useState(null);
   const [inputText, setInputText] = useState('');
+  const [result, setResult] = useState('');
+  const [userDiseases, setUserDiseases] = useState([]); // State to store diseases from ProfileCard
+
 
   const handleDrop = (e) => {
     e.preventDefault();
     setFile(e.dataTransfer.files[0]);
   };
-  // const [searchText, setSearchText] = useState('');
-  // const [isListening, setIsListening] = useState(false);
 
-  // useEffect(() => {
-  //   // Check if the browser supports SpeechRecognition
-  //   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const checkFoodConsumption = (foodItem) => {
+    // Find the food item in the foodRestrictionsData
+    const food = foodRestrictionsData.foodItems.find(item => item.name.toLowerCase() === foodItem.toLowerCase());
+
+    if (!food) {
+      setResult(`No restriction found for ${foodItem}. You can consume it.`);
+      return;
+    }
+
+    // Check if any of the user's diseases conflict with the food restrictions
+    const conflictingDiseases = food.cannotConsume.filter(disease => userDiseases.includes(disease));
     
-  //   if (SpeechRecognition) {
-  //     const recognition = new SpeechRecognition();
-  //     recognition.lang = 'en-US'; // Set the language to English (US)
-  //     recognition.interimResults = true; // Capture partial results during speech
+    if (conflictingDiseases.length > 0) {
+      setResult(`You cannot consume ${foodItem} due to: ${conflictingDiseases.join(', ')}`);
+    } else {
+      setResult(`You can consume ${foodItem}.`);
+    }
+  };
+
+  const handleSearch = () => {
+    checkFoodConsumption(inputText.trim());
+  };
+
+  const [isListening, setIsListening] = useState(false);
+
+  useEffect(() => {
+    // Check if the browser supports SpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US'; // Set the language to English (US)
+      recognition.interimResults = true; // Capture partial results during speech
       
-  //     recognition.onstart = () => {
-  //       setIsListening(true);
-  //       setSearchText("Please start speaking....");
-  //     };
-  //     recognition.onend = () => setIsListening(false);
+      recognition.onstart = () => {
+        setIsListening(true);
+        setInputText("Please start speaking....");
+      };
+      recognition.onend = () => setIsListening(false);
       
-  //     recognition.onresult = (event) => {
-  //       // Get the recognized text from the speech event
-  //       const transcript = Array.from(event.results)
-  //         .map((result) => result[0].transcript)
-  //         .join('');
-  //       setSearchText(transcript); // Update the search text in the input field
-  //     };
+      recognition.onresult = (event) => {
+        // Get the recognized text from the speech event
+        const transcript = Array.from(event.results)
+          .map((result) => result[0].transcript)
+          .join('');
+        setInputText(transcript); // Update the search text in the input field
+      };
 
-  //     // Function to start/stop speech recognition
-  //     const handleVoiceClick = () => {
-  //       if (isListening) {
-  //         recognition.stop();
-  //       } else {
-  //         recognition.start();
-  //       }
-  //     };
+      // Function to start/stop speech recognition
+      const handleVoiceClick = () => {
+        if (isListening) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      };
 
-  //     // Set the handleVoiceClick function as a property on recognition for easy access
-  //     recognition.handleVoiceClick = handleVoiceClick;
+      // Set the handleVoiceClick function as a property on recognition for easy access
+      recognition.handleVoiceClick = handleVoiceClick;
 
-  //     // Attach the recognition instance to the window for easy access in onClick handler
-  //     window.recognition = recognition;
-  //   }
-  // }, [isListening]);
+      // Attach the recognition instance to the window for easy access in onClick handler
+      window.recognition = recognition;
+    }
+  }, [isListening]);
 
   // // Access the function directly for the onClick handler
   // const handleVoiceClick = () => window.recognition && window.recognition.handleVoiceClick();
@@ -91,10 +116,13 @@ const Dashboard = () => {
   //     </div>
   //   </div>
   // );
+
+  const handleVoiceClick = () => window.recognition && window.recognition.handleVoiceClick();
+
   return (
     <div className="flex min-h-screen w-full bg-gray-900 text-white">
       
-      <ProfileCard />
+      <ProfileCard setUserDiseases={setUserDiseases} />
 
 
 
@@ -121,14 +149,24 @@ const Dashboard = () => {
             placeholder="Type here..."
             className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
           />
-          <button className="ml-2 p-2 rounded-full text-green-500 hover:text-green-400 transition duration-200">
+          <button onClick={handleVoiceClick} className="ml-2 p-2 rounded-full text-green-500 hover:text-green-400 transition duration-200">
             <Mic />
           </button>
         </div>
+
+        <button
+            onClick={handleSearch}
+            className="my-4 px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
+          >
+            Search
+          </button>
+          {/* Display the result */}
+          <div className="mt-4 text-white">
+            <p>{result}</p>
+          </div>
       </div>
     </div>
 
-      {/* <MainDash /> */}
     </div>
 
 );
