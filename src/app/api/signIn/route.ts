@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const user = await UserModel.findOne({email});
       
     if (!user) {
-      return Response.json(
+      return NextResponse.json(
         { success: false, message: "User does not exist" },
         { status: 400 },
       );

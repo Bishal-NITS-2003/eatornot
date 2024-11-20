@@ -1,36 +1,57 @@
-import { NextResponse } from 'next/server';
-import { Clarifai } from 'clarifai';
+import { NextRequest, NextResponse } from "next/server";
 
-const PAT = 'your_personal_access_token'; // Replace with your personal access token
-const MODEL_ID = 'food-item-recognition'; // The model you want to use
-const MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'; // Optional version ID, replace with the correct one
-
-const clarifaiApp = new Clarifai.App({ apiKey: PAT });
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { imageBase64 } = await req.json();
+    const { base64Image, confidenceThreshold = 0.1 } = await req.json();
 
-    const response = await clarifaiApp.models.predict(
-      MODEL_ID, 
-      { base64: imageBase64 }, 
-      { model_version: MODEL_VERSION_ID }
-    );
-
-    if (response.status.code !== 10000) {
+    if (!base64Image) {
       return NextResponse.json(
-        { message: 'Failed to analyze the image' },
+        { success: false, message: "No image data provided" },
         { status: 400 }
       );
     }
 
-    // Get the concepts from the response
-    const concepts = response.outputs[0].data.concepts;
+    const clarifaiAPIKey = process.env.FOOD_CLARIFAI_API_KEY;
+    const clarifaiURL = `https://api.clarifai.com/v2/users/clarifai/apps/main/models/food-item-recognition/versions/1d5fd481e0cf4826aa72ec3ff049e044/outputs`;
 
-    return NextResponse.json({ concepts });
+    const response = await fetch(clarifaiURL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Key ${clarifaiAPIKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        inputs: [
+          {
+            data: {
+              image: {
+                base64: base64Image,
+              },
+            },
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { success: false, message: "Clarifai API error", details: errorData },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    // Filter ingredients based on confidence score
+    const ingredients =
+      data?.outputs?.[0]?.data?.concepts
+        ?.filter((concept: any) => concept.value >= confidenceThreshold) // Only include concepts with high confidence
+        .map((concept: any) => concept.name) || []; // Extract their names
+
+    return NextResponse.json({ success: true, ingredients }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: 'Failed to detect food item', error: error.message },
+      { success: false, message: "An unexpected error occurred", error },
       { status: 500 }
     );
   }

@@ -15,7 +15,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <div className="text-center text-white space-y-8 z-10">
-        <h1 className="text-5xl font-bold">Food Detector</h1>
+        <h1 className="text-5xl font-bold">Eat Or Not</h1>
         <p className="text-lg text-gray-300 max-w-md mx-auto">
           Discover the suitability of foods based on dietary restrictions and health conditions.
         </p>
