@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
           {
             data: {
               text: {
-                raw: `I have these Diseases: ${userDiseases.join(", ")} and my Food Item has ingrediants: ${foodItem.join(", ")} can I have it? Answer in this format you may/ may not eat this food item due to this disease`,
+                raw: `I have ${userDiseases.join(", ")} and my food item has ingredients: ${foodItem.join(", ")}. Answer in this format you may/may not eat this food item. Give reason in less than 10 words`,
               },
             },
           },

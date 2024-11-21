@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { use, useEffect, useState } from 'react';
 import diseasesData from '../data/diseases.json';
+import { useRouter } from 'next/navigation';  // Import useRouter for navigation
 
-import { User, X, Plus  } from 'lucide-react';
+import { User, X, Plus, Trash2  } from 'lucide-react';
 
 const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
+
+  const router = useRouter();
  
 
   const [name, setName] = useState("Loading...");
@@ -14,6 +18,7 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
   const [newItem, setNewItem] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [allItems, setAllItems] = useState([]); // Initially empty
+  const [isEditing, setIsEditing] = useState(false);
 
 
   // Populate allItems from the JSON data
@@ -62,7 +67,7 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
 
     const handleSuggestionClick = (suggestion) => {
       setNewItem(suggestion);
-      setSuggestions([]); // Clear suggestions after selection
+      setTimeout(() => setSuggestions([]), 0); // Clear suggestions with a slight delay
     };
 
 
@@ -98,6 +103,52 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
     }
   };
 
+  const handleDeleteItem = async (index) => {
+    setListItems((prev) => prev.filter((_, i) => i !== index));
+
+  };
+
+  const updateDiseasesItem = async () => {
+    if(isEditing){
+    try {
+      const response = await fetch('/api/updateDiseases', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,  // Pass the userId to the backend
+          diseases: listItems,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update diseases in the database');
+      }
+
+      const updatedUser = await response.json();
+      setUserDiseases(updatedUser.diseases);  // Update the parent component's state with the updated diseases
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating diseases:', error);
+    }
+  }else{
+    setIsEditing(true);
+  }
+  }
+
+
+  const handleLogOut = async () => {
+
+    await fetch('/api/logout', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {  router.push("/signIn");console.log(data.message)})
+      .catch((err) => console.error(err));
+    
+  }
+
   return (
     <div className="h-full bg-gray-800 p-6 flex flex-col items-center relative">
       {/* Close button for mobile/tablet views */}
@@ -112,8 +163,14 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
         <div className="bg-green-500 p-6 rounded-full mb-4">
           <User className="text-gray-900 size-10" />
         </div>
-        <h2 className="mt-4 text-xl font-bold text-center">{name}</h2>
+        <h2 className="mt-1 text-xl font-bold text-center">{name}</h2>
         <p className="text-gray-400 text-center">{email}</p>
+        <button
+                onClick={handleLogOut}
+                className="my-3 px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
+              >
+                Log out
+              </button>
       </div>
 
 
@@ -135,27 +192,45 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
             <Plus className="w-5 h-5 text-white" />
           </button>
         </div>
-          {/* Suggestions Dropdown */}
-          {suggestions.length > 0 && (
-            <ul className="absolute left-0 right-0 bg-gray-700 rounded-lg ml-6  max-w-40 overflow-y-auto shadow-lg" style={{height: "300px"}}>
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="px-3 py-2 text-white cursor-pointer hover:bg-gray-600"
-                >
-                  {suggestion}
-                </li>
-              ))}
-            </ul>
-          )}
+         {/* Suggestions Dropdown */}
+{suggestions.length > 0 && (
+  <div className="relative w-full">
+    <ul
+      className="absolute left-0 bg-gray-700 rounded-lg max-h-40 overflow-y-auto shadow-lg z-10"
+    >
+      {suggestions.map((suggestion, index) => (
+        <li
+          key={index}
+          onClick={() => handleSuggestionClick(suggestion)}
+          className="px-3 py-2 text-white cursor-pointer hover:bg-gray-600"
+        >
+          {suggestion}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
         <ul className="list-disc pl-5 space-y-2">
           {listItems.map((item, index) => (
-            <li key={index} className="text-gray-300">
-              {item}
+            <li key={index} className="text-gray-300" >
+              <span>{item}</span>
+              {isEditing ? (
+              <button
+                  onClick={() => handleDeleteItem(index)}
+                  className="ml-2 p-1 text-white rounded hover:bg-red-600"
+                >
+                  <Trash2 className="text-red" />
+                </button>):<div></div>}
             </li>
+            
           ))}
         </ul>
+        <button
+            onClick={updateDiseasesItem}
+            className="my-3 px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
+          >
+            {isEditing ? "Update Diseases" : "Edit Diseases"}
+          </button>
       </div>
     </div>
   );
