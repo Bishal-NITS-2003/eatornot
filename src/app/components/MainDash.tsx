@@ -130,7 +130,16 @@ const foodNews = [
 
   const handleCameraClick = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      // Check if the device is mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+  
+      const constraints = isMobile
+        ? { video: { facingMode: { ideal: "environment" } } } // Use ideal for mobile
+        : { video: true }; // Use default video settings for non-mobile
+  
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       setCameraStream(stream);
       setIsCameraOpen(true);
     } catch (error) {
