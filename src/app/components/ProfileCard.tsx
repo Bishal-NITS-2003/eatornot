@@ -194,7 +194,7 @@ const ProfileCard = ({ setUserDiseases, closeSidebar }) => {
         </div>
          {/* Suggestions Dropdown */}
 {suggestions.length > 0 && (
-  <div className="relative w-full">
+  <div className="relative w-full" key={suggestions.join(',')}>
     <ul
       className="absolute left-0 bg-gray-700 rounded-lg max-h-40 overflow-y-auto shadow-lg z-10"
     >

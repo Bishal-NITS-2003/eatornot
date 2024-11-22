@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import MainDash from "../components/MainDash";
 import './styles.css';
-import { useRouter } from "next/router";  // Import useRouter for navigation
 
 
 

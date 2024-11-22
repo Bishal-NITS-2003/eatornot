@@ -1,6 +1,15 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+
+// Extend the Window interface to include the recognition property
+declare global {
+  interface Window {
+    recognition: any;
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 import { Mic, Camera, X, Search, CheckCircle, AlertTriangle } from "lucide-react";
 import ScrollableNews from "./ScrollableNews";
 
@@ -349,53 +358,7 @@ const foodNews = [
       <ScrollableNews newsItems={foodNews} />
     </div>
   </div>
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-    //     {file ? (
-    //     <div className="relative flex flex-col items-center justify-center z-10">
-    //       <p className="text-green-400">{file.name}</p>
-    //     ) : (
-    //       <p className="text-gray-400">
-    //         Drag and drop an image, or click to select
-    //       </p>
-    //     )}
-
-       
-    //   </div>
-
-    //   {/* Image preview (from drop or file selection or camera capture) */}
-    //   {/* Image preview (from drop or file selection or camera capture) */}
-
-    //   <div className="mt-8">
-    //     <label className="block mb-2 text-sm font-medium text-green-500">
-    //       Enter Text
-    //     </label>
-    //     <div className="flex items-center border rounded-lg border-gray-700 bg-gray-800 px-4 py-2">
-          
-         
-         
-    //     </div>
-        
-
-       
-
-    
-
-       
-    //   </div>
-    // </div>
   );
 };
 

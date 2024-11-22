@@ -1,6 +1,6 @@
 "use client"; // This marks this component as a client-side component
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import FloatingShape from "../components/FloatingShape";
 import { motion } from "framer-motion";
 import { Mail, Lock } from "lucide-react";
@@ -9,7 +9,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 
 
-export default function Layout({ children }) {
+const SignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ export default function Layout({ children }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // If response is not ok, handle the error based on the server's response
+        // If response is not ok, handle the error based on the server&apos;s response
         throw new Error(data.message || "Something went wrong.");
       }
       // On successful login, redirect to the dashboard page
@@ -111,7 +111,7 @@ export default function Layout({ children }) {
       </div>
       <div className="px-8 py-4 bg-gray-900 bg-opacity-50 flex justify-center">
         <p className="text-sm text-gray-400">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/signUp" className="text-green-400 hover:underline">
             Sign up
           </Link>
@@ -121,3 +121,5 @@ export default function Layout({ children }) {
     </div>
   );
 }
+
+export default SignIn;
