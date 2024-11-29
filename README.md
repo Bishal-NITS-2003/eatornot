@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# 🍴 **Eat or Not**  
+_A modern web application to analyze food items, handle text inputs, voice commands, and images, providing information about whether it's safe to consume them._  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📖 **Overview**  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+"Eat or Not" is an intuitive and interactive web application where users can:  
+- **Check food edibility** based on their personalized health card.  
+- **Upload images** of food items and get an analysis of their edibility.  
+- **Input text** to search for relevant food-related information.  
+- **Use voice commands** to interact hands-free.  
+- Stay updated with the **latest food news** from a scrollable feed.  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+This tool is perfect for individuals with dietary restrictions, allergies, or those seeking quick food-related insights!  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🖼️ **Features**  
 
-To learn more about Next.js, take a look at the following resources:
+### 🩺 Personalized Health Card Integration  
+- Create a health card listing diseases, allergies, or dietary restrictions.  
+- Analyze food items based on your unique health profile.  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🖌️ Drag-and-Drop Image Analysis  
+- Upload an image of a food item.  
+- Real-time preview and processing.  
+- Get results with a single click!  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🎤 Voice Command Integration  
+- Hands-free search using the microphone.  
+- Instant, accurate results.  
 
-## Deploy on Vercel
+### 🔎 Advanced Text Search  
+- Type queries directly into the input field.  
+- Get real-time responses with one click.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 📰 Latest Food News  
+- Stay informed with trending food news and updates in the integrated news section.  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 **Getting Started**  
+
+### 1️⃣ **Installation**  
+Clone the repository:  
+```bash  
+git clone https://github.com/Bishal-NITS-2003/eatornot.git  
+```  
+
+Navigate to the project directory:  
+```bash  
+cd eatornot  
+```  
+
+Install dependencies:  
+```bash  
+npm install  
+```  
+
+### 2️⃣ **Running the App**  
+Start the development server:  
+```bash  
+npm run dev  
+```  
+
+Access the application at:  
+```  
+http://localhost:3000  
+```  
+
+---
+
+## 🛠️ **Technologies Used**  
+
+- **Next.js** - Frontend and Backend framework.  
+- **Tailwind CSS** - For beautiful, responsive design.  
+- **JavaScript** - Core functionality.  
+- **HTML & CSS** - Markup and styling.  
+
+---
+
+## ✨ **Key Components**  
+
+### 🩺 **Health Card Feature**  
+- Add and manage diseases, allergies, or dietary restrictions.  
+- Analyze food items based on your health card.  
+
+### 📂 **Drag-and-Drop Component**  
+- Upload images with ease.  
+- Provides dynamic previews and buttons for actions.  
+
+### 🎤 **Voice Command Component**  
+- Enables voice search functionality.  
+
+### 🔎 **Search Input Field**  
+- Perform quick text-based queries.  
+
+### 📰 **Food News Component**  
+- Displays the latest food updates in a scrollable feed.  
+
+---
+
+## 🤝 **Contributing**  
+
+We welcome contributions!  
+
+1. Fork the repository.  
+2. Create a new branch:  
+   ```bash  
+   git checkout -b feature/your-feature-name  
+   ```  
+3. Commit your changes:  
+   ```bash  
+   git commit -m "Add your message"  
+   ```  
+4. Push to the branch:  
+   ```bash  
+   git push origin feature/your-feature-name  
+   ```  
+5. Create a pull request.  
+
+---
+
+## 🎉 **Acknowledgments**  
+
+Special thanks to:  
+- Libraries like **Next.js** and **Tailwind CSS** for making development efficient and fun.  
+- Inspiration from food-related APIs and platforms like **Clarifai**.  
+
+--- 
