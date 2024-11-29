@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
   }
 
   // If the token does not exist and the user is not on a public path, redirect to /signIn
-  const isPublicPath = path === '/signIn' || path === '/signUp';
+  const isPublicPath = path === '/signIn' || path === '/signUp' || path === '/';
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL('/signIn', request.url));
   }
